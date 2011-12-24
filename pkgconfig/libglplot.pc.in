@@ -1,0 +1,11 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: libglplot
+Description: OpenGL rendering library of standard plot
+Version: @VERSION@
+Libs: -L${libdir} -lGL
+Cflags: -I${includedir}/libglplot
+
