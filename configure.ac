@@ -87,5 +87,5 @@ fi
 
 
 
-AC_CONFIG_FILES([Makefile src/Makefile src/qt/Makefile src/glsw/Makefile test/Makefile include/Makefile pkgconfig/libglplot.pc])
+AC_CONFIG_FILES([Makefile src/Makefile src/qt/Makefile test/Makefile include/Makefile pkgconfig/libglplot.pc])
 AC_OUTPUT
