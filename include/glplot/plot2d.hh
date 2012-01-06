@@ -54,7 +54,7 @@ public :
 
 	/* External functions */
 	void f_clear(void);
-	void f_plot(GLdouble * in_ad_gnuplot, size_t in_sz_data, enum et_curve_type e_type = E_TYPE_STD, uint in_i_index = 0);
+	void f_plot(GLdouble * in_ad_gnuplot, size_t in_sz_data, enum et_curve_type e_type = E_TYPE_STD, uint32_t in_i_index = 0);
 };
 
 }

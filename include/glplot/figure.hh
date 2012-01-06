@@ -24,6 +24,7 @@
 #define FIGURE_HH_
 
 #include <glplot/core.hh>
+#include <pthread.h>
 
 namespace glplot {
 class figure {

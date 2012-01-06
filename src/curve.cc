@@ -67,7 +67,7 @@ void curve::f_init(GLdouble * in_ad_x, GLdouble * in_ad_y, size_t in_sz_data,
 	_f_max_z = -std::numeric_limits<double>::infinity();
 
 	/* Fill vertex buffer with new data */
-	for (uint i = 0; i < in_sz_data; i++) {
+	for (uint32_t i = 0; i < in_sz_data; i++) {
 		double f_x, f_y, f_z;
 
 		/* Get values */

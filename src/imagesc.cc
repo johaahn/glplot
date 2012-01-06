@@ -232,11 +232,11 @@ void imagesc::f_gl_init(void) {
 
 	/* Compile shader */
 #if 1
-	f_gl_shader_compile("src/glsl/imagesc.vert.glsl", GL_VERTEX_SHADER,
+	f_gl_shader_compile("imagesc.vert.glsl", GL_VERTEX_SHADER,
 			_i_shader_program);
 #endif
 #if 1
-	f_gl_shader_compile("src/glsl/imagesc.frag.glsl", GL_FRAGMENT_SHADER,
+	f_gl_shader_compile("imagesc.frag.glsl", GL_FRAGMENT_SHADER,
 			_i_shader_program);
 #endif
 
@@ -254,7 +254,7 @@ void imagesc::f_gl_init(void) {
 }
 
 /* Main plot function */
-void imagesc::f_plot(GLdouble * in_ad_gnuplot, size_t in_sz_x, size_t in_sz_y) {
+void imagesc::f_plot(double * in_ad_gnuplot, size_t in_sz_x, size_t in_sz_y) {
 
 	/* Allocation of vertex buffer */
 	size_t sz_data = in_sz_x*in_sz_y;
@@ -273,10 +273,52 @@ void imagesc::f_plot(GLdouble * in_ad_gnuplot, size_t in_sz_x, size_t in_sz_y) {
 	_f_max = -std::numeric_limits<double>::infinity();
 
 	/* Fill vertex buffer with new data */
-	for (uint i = 0; i < sz_data; i++) {
+	for (uint32_t i = 0; i < sz_data; i++) {
 		double f_value;
 		/* Load value */
 		f_value = in_ad_gnuplot[i];
+
+		/* Store value */
+		_as_data[i].d_value = f_value;
+		//cout << "i:" << i <<", value:"<<f_value<<endl;
+		/* Update mins */
+		_f_min = _f_min > f_value ? f_value : _f_min;
+		/* Update max */
+		_f_max = _f_max < f_value ? f_value : _f_max;
+
+	}
+	//cout << "EXTREM" << _f_max << " " << _f_min <<endl;
+
+	/* Update counter */
+	_i_data_update++;
+
+}
+
+
+/* Main plot function */
+void imagesc::f_plot(float * in_af_gnuplot, size_t in_sz_x, size_t in_sz_y) {
+
+	/* Allocation of vertex buffer */
+	size_t sz_data = in_sz_x*in_sz_y;
+	if (_sz_data != sz_data) {
+		if (_as_data) {
+			delete[] _as_data;
+		}
+		_as_data = new vertex_image[sz_data];
+		_sz_data = sz_data;
+		_sz_x = in_sz_x;
+		_sz_y = in_sz_y;
+	}
+
+	/* Reset min max */
+	_f_min = std::numeric_limits<double>::infinity();
+	_f_max = -std::numeric_limits<double>::infinity();
+
+	/* Fill vertex buffer with new data */
+	for (uint32_t i = 0; i < sz_data; i++) {
+		double f_value;
+		/* Load value */
+		f_value = in_af_gnuplot[i];
 
 		/* Store value */
 		_as_data[i].d_value = f_value;

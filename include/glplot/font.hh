@@ -23,8 +23,7 @@
 #ifndef FONT_HH_
 #define FONT_HH_
 
-#include <glplot/debug.hh>
-#include <vmath/vmath.h>
+#include <glplot/vmath.hh>
 
 //OpenGL Headers
 #define GL_GLEXT_PROTOTYPES
@@ -113,9 +112,9 @@ class font_contour {
 
 	std::vector<font_segment> _v_conic;
 
-	uint _i_cnt_line;
-	uint _i_cnt_cubic;
-	uint _i_cnt_conic;
+	uint32_t _i_cnt_line;
+	uint32_t _i_cnt_cubic;
+	uint32_t _i_cnt_conic;
 
 public:
 	font_contour();
@@ -132,7 +131,7 @@ public:
 	void f_render_conic(enum ET_FILL_TYPE in_e_fill_mode);
 	enum ET_CLOCKWISE_TYPE f_is_clockwise(void);
 	font_vertex * f_add_extra_point(GLdouble * in_af_coords);
-	uint f_nb_segment(void) {return  _i_cnt_line + _i_cnt_cubic + _i_cnt_conic; }
+	uint32_t f_nb_segment(void) {return  _i_cnt_line + _i_cnt_cubic + _i_cnt_conic; }
 };
 
 class font_char {
@@ -173,8 +172,8 @@ public:
 	void f_init_as_bitmap(wchar_t in_i_char, FT_Face & in_ps_face, GLuint in_i_gl_tex, GLuint in_i_gl_list);
 
 	/* Get */
-	uint f_get_width() {return (_c_control_max.x>0.0 ? _c_control_max.x: 0) - (_c_control_min.x<0.0 ? _c_control_min.x: 0);}
-	uint f_get_height() {return (_c_control_max.y>0.0 ? _c_control_max.y: 0) - (_c_control_min.y<0.0 ? _c_control_min.y: 0);}
+	uint32_t f_get_width() {return (_c_control_max.x>0.0 ? _c_control_max.x: 0) - (_c_control_min.x<0.0 ? _c_control_min.x: 0);}
+	uint32_t f_get_height() {return (_c_control_max.y>0.0 ? _c_control_max.y: 0) - (_c_control_min.y<0.0 ? _c_control_min.y: 0);}
 };
 
 
@@ -194,9 +193,9 @@ class font {
 	std::map<wchar_t, font_char> _m_chars;
 
 	/* Scale parameters */
-	uint _i_width_max, _i_height_max;
+	uint32_t _i_width_max, _i_height_max;
 
-	uint _i_width_avg;
+	uint32_t _i_width_avg;
 
 public:
 	font();

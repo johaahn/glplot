@@ -26,7 +26,7 @@
 #include <string>
 #include <limits>
 #include <string.h>
-#include <vmath/vmath.h>
+#include <glplot/vmath.hh>
 
 using namespace std;
 using namespace glplot;
@@ -71,7 +71,7 @@ void plot2d::f_clear(void) {
 
 /* Main plot function */
 void plot2d::f_plot(GLdouble * in_ad_gnuplot, size_t in_sz_data,
-		enum et_curve_type e_type, uint in_i_index) {
+		enum et_curve_type e_type, uint32_t in_i_index) {
 	_m_curves[in_i_index].f_init(NULL, in_ad_gnuplot, in_sz_data, e_type);
 }
 #if 0

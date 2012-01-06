@@ -82,7 +82,8 @@ public :
 	virtual void f_gl_init(void);
 	virtual void f_gl_update(double & in_f_min_x,double & in_f_max_x,double & in_f_min_y,double & in_f_max_y,double & in_f_min_z,double & in_f_max_z);
 	/* External functions */
-	void f_plot(GLdouble * in_ad_gnuplot, size_t in_sz_x, size_t in_sz_y);
+	void f_plot(double * in_ad_gnuplot, size_t in_sz_x, size_t in_sz_y);
+	void f_plot(float * in_af_gnuplot, size_t in_sz_x, size_t in_sz_y);
 };
 
 }

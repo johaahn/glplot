@@ -19,6 +19,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
+#include <glplot/debug.hh>
 #include <glplot/core.hh>
 #include <GL/gl.h>
 #include <GL/glu.h>
@@ -62,7 +63,7 @@ void core::f_gl_init(void) {
 	assert(_f_glTexBufferEXT);
 }
 
-void core::f_gl_resize(uint in_i_w, uint in_i_h) {
+void core::f_gl_resize(uint32_t in_i_w, uint32_t in_i_h) {
 
 	_i_width = in_i_w;
 	_i_heigth = in_i_h;
@@ -80,13 +81,13 @@ void core::f_gl_render(void) {
 	assert(0);
 }
 
-void core::f_zoom_pos_start(uint in_i_x, uint in_i_y) {
+void core::f_zoom_pos_start(uint32_t in_i_x, uint32_t in_i_y) {
 	cout << __FUNCTION__ << " " << in_i_x << " " << in_i_y << endl;
 }
-void core::f_zoom_pos_update(uint in_i_x, uint in_i_y) {
+void core::f_zoom_pos_update(uint32_t in_i_x, uint32_t in_i_y) {
 	cout << __FUNCTION__ << " " << in_i_x << " " << in_i_y << endl;
 }
-void core::f_zoom_pos_end(uint in_i_x, uint in_i_y) {
+void core::f_zoom_pos_end(uint32_t in_i_x, uint32_t in_i_y) {
 	cout << __FUNCTION__ << " " << in_i_x << " " << in_i_y << endl;
 }
 void core::f_zoom_reset() {

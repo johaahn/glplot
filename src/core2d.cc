@@ -26,7 +26,7 @@
 #include <limits>
 #include <string>
 #include <string.h>
-#include <vmath/vmath.h>
+#include <glplot/vmath.hh>
 
 using namespace std;
 using namespace glplot;
@@ -34,9 +34,11 @@ using namespace glplot;
 core2d::core2d() {
 	_b_zoom_draw = false;
 	_b_zoom_auto = true;
+
+	_str_glsl_path = "/usr/local/share/glplot/";
 }
 
-void core2d::f_zoom_pos_start(uint in_i_x, uint in_i_y) {
+void core2d::f_zoom_pos_start(uint32_t in_i_x, uint32_t in_i_y) {
 	cout << __FUNCTION__ << " " << in_i_x << " " << in_i_y << endl;
 	GLdouble f_obj_x, f_obj_y, f_obj_z;
 	gluUnProject(in_i_x, f_get_height() - in_i_y, 0, _af_model_matrix,
@@ -51,7 +53,7 @@ void core2d::f_zoom_pos_start(uint in_i_x, uint in_i_y) {
 
 	_b_zoom_draw = true;
 }
-void core2d::f_zoom_pos_update(uint in_i_x, uint in_i_y) {
+void core2d::f_zoom_pos_update(uint32_t in_i_x, uint32_t in_i_y) {
 	if (_b_zoom_draw) {
 		cout << __FUNCTION__ << " " << in_i_x << " " << in_i_y << endl;
 		GLdouble f_obj_x, f_obj_y, f_obj_z;
@@ -66,7 +68,7 @@ void core2d::f_zoom_pos_update(uint in_i_x, uint in_i_y) {
 	}
 
 }
-void core2d::f_zoom_pos_end(uint in_i_x, uint in_i_y) {
+void core2d::f_zoom_pos_end(uint32_t in_i_x, uint32_t in_i_y) {
 	if (_b_zoom_draw) {
 		cout << __FUNCTION__ << " " << in_i_x << " " << in_i_y << endl;
 
@@ -241,7 +243,7 @@ void core2d::f_gl_render(void) {
 
 	/* Draw Rules */
 	double f_range_x = f_max_x - f_min_x;
-	uint i_rule_k = 1;
+	uint32_t i_rule_k = 1;
 	int i_rule_exp = 0;
 
 	while (1) {
@@ -349,6 +351,10 @@ void core2d::f_gl_init(void) {
 	core::f_gl_init();
 }
 
+void core2d::f_gl_shader_set_glsl_path(string const & in_str_path) {
+	_str_glsl_path = in_str_path;
+}
+
 void core2d::f_gl_shader_compile(string const & in_str_filename,
 		GLenum in_e_shader, GLuint in_i_shader_program) {
 	/* Create shader */
@@ -357,9 +363,9 @@ void core2d::f_gl_shader_compile(string const & in_str_filename,
 	/* Read file content */
 	const char * pc_tmp;
 	try {
-		pc_tmp = strdup(f_misc_file_content(in_str_filename).c_str());
+		pc_tmp = strdup(f_misc_file_content(_str_glsl_path + in_str_filename).c_str());
 	} catch (...) {
-		cerr << "Unable to open " << in_str_filename << endl;
+		cerr << "Unable to open " << _str_glsl_path + in_str_filename << endl;
 		exit(-1);
 	}
 	cout << pc_tmp << endl;
@@ -378,7 +384,7 @@ void core2d::f_gl_shader_compile(string const & in_str_filename,
 		GLchar ac_log[1024];
 		glGetShaderInfoLog(i_shader, sizeof(ac_log), 0, ac_log);
 
-		cerr << "Could not compile shader: " << in_str_filename << endl;
+		cerr << "Could not compile shader: " << _str_glsl_path + in_str_filename << endl;
 		cerr << ac_log << endl;
 		glDeleteShader(i_shader);
 		exit(-1);

@@ -40,6 +40,8 @@ class core2d : public core {
     font::font_data _s_font;
     font::font _s_font_2;
 
+    /* GLSL */
+    std::string _str_glsl_path;
 public:
     /* Zoom stuff */
     double _f_zoom_start_x, _f_zoom_start_y, _f_zoom_start_z;
@@ -61,14 +63,15 @@ public :
 	virtual void f_gl_update(double & in_f_min_x,double & in_f_max_x,double & in_f_min_y,double & in_f_max_y,double & in_f_min_z,double & in_f_max_z);
 
 	/* Zoom methods */
-	void f_zoom_pos_start(uint in_i_x, uint in_i_y);
-	void f_zoom_pos_update(uint in_i_x, uint in_i_y);
-	void f_zoom_pos_end(uint in_i_x, uint in_i_y);
+	void f_zoom_pos_start(uint32_t in_i_x, uint32_t in_i_y);
+	void f_zoom_pos_update(uint32_t in_i_x, uint32_t in_i_y);
+	void f_zoom_pos_end(uint32_t in_i_x, uint32_t in_i_y);
 	void f_zoom_reset();
 
 	/* shaders methods */
 	void f_gl_shader_compile(std::string const & in_str_filename, GLenum in_e_shader, GLuint in_i_shader_program);
 	void f_gl_shader_link(GLuint in_i_shader_program);
+	void f_gl_shader_set_glsl_path(std::string const & in_str_path);
 };
 
 }

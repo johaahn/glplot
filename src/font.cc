@@ -251,7 +251,7 @@ void font_contour::f_tessel(GLUtesselator * in_ps_tess,
 	/* Add first point */
 	//f_tessel_point(in_ps_tess, _v_segment[0]._c_start);
 
-	for (uint i = 0; i < _v_segment.size(); i++) {
+	for (uint32_t i = 0; i < _v_segment.size(); i++) {
 		font_segment & c_seg = _v_segment[i];
 
 		switch (c_seg._e_type) {
@@ -284,7 +284,7 @@ void font_contour::f_tessel(GLUtesselator * in_ps_tess,
 void font_contour::f_render_conic(enum ET_FILL_TYPE in_e_fill_mode) {
 	if (_i_cnt_conic) {
 		glBegin(GL_TRIANGLES);
-		for (uint i = 0; i < _v_segment.size(); i++) {
+		for (uint32_t i = 0; i < _v_segment.size(); i++) {
 			font_segment & c_seg = _v_segment[i];
 			float f_sign = 1.0;
 #if 0
@@ -449,8 +449,8 @@ void font_char::f_init_as_bitmap(wchar_t in_i_char, FT_Face &in_c_face, GLuint i
 	//Use our helper function to get the widths of
 	//the bitmap data that we will need in order to create
 	//our texture.
-	uint i_bitmap_width = f_next_p2(s_bitmap.width);
-	uint i_bitmap_height = f_next_p2(s_bitmap.rows);
+	uint32_t i_bitmap_width = f_next_p2(s_bitmap.width);
+	uint32_t i_bitmap_height = f_next_p2(s_bitmap.rows);
 
 	/* Allocate memory for the texture data */
 	size_t sz_bitmap = 2 * i_bitmap_width * i_bitmap_height;
@@ -816,7 +816,7 @@ void font::f_init(const char * fname,size_t in_i_size_bitmap) {
 		throw std::runtime_error(
 				"FT_New_Face failed (there is probably a problem with your font file)");
 
-	uint i_nb_chars = 65536;
+	uint32_t i_nb_chars = 65536;
 
 	if (_sz_bitmap) {
 		FT_Set_Char_Size(c_face, _sz_bitmap << 6, _sz_bitmap << 6, 96, 96);
@@ -853,7 +853,7 @@ void font::f_init(const char * fname,size_t in_i_size_bitmap) {
 	_i_width_max = 0;
 	_i_height_max = 0;
 	_i_width_avg = 0;
-	uint i_width_avg_cnt = 0;
+	uint32_t i_width_avg_cnt = 0;
 	cout << __LINE__ << endl;
 	while (glyph_index != 0) {
 		//cout << "CHAR : " << std::hex << char_code << std::dec << " " << endl;

@@ -6,6 +6,6 @@ includedir=@includedir@
 Name: libglplot
 Description: OpenGL rendering library of standard plot
 Version: @VERSION@
-Libs: -L${libdir} -lGL
+Libs: -L${libdir} -lglplot -lGL 
 Cflags: -I${includedir}/libglplot
 

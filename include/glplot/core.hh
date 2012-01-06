@@ -19,8 +19,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
-
-#include <glplot/debug.hh>
+#include <stdint.h>
 
 #define GL_GLEXT_PROTOTYPES
 #include <GL/gl.h>
@@ -37,8 +36,8 @@ namespace glplot {
 class core {
 
 	float _f_aspect;
-	uint _i_width;
-	uint _i_heigth;
+	uint32_t _i_width;
+	uint32_t _i_heigth;
 
 public:
 	/* EXT */
@@ -48,18 +47,18 @@ public:
 	core();
 
 	virtual void f_gl_init(void);
-	virtual void f_gl_resize(uint in_i_w, uint in_i_h);
+	virtual void f_gl_resize(uint32_t in_i_w, uint32_t in_i_h);
 	virtual void f_gl_render(void);
 
-	//void f_zoom(uint in_i_x1, uint in_i_y1, uint in_i_x2, uint in_i_y2)
-	virtual void f_zoom_pos_start(uint in_i_x, uint in_i_y);
-	virtual void f_zoom_pos_update(uint in_i_x, uint in_i_y);
-	virtual void f_zoom_pos_end(uint in_i_x, uint in_i_y);
+	//void f_zoom(uint32_t in_i_x1, uint32_t in_i_y1, uint32_t in_i_x2, uint32_t in_i_y2)
+	virtual void f_zoom_pos_start(uint32_t in_i_x, uint32_t in_i_y);
+	virtual void f_zoom_pos_update(uint32_t in_i_x, uint32_t in_i_y);
+	virtual void f_zoom_pos_end(uint32_t in_i_x, uint32_t in_i_y);
 	virtual void f_zoom_reset();
 
 	/* Quick Get */
-	uint f_get_width(void) { return _i_width; }
-	uint f_get_height(void) { return _i_heigth; }
+	uint32_t f_get_width(void) { return _i_width; }
+	uint32_t f_get_height(void) { return _i_heigth; }
 };
 
 }
