@@ -38,6 +38,10 @@ core2d::core2d() {
 	_str_glsl_path = "/usr/local/share/glplot/";
 }
 
+core2d::~core2d() {
+	cout << _str_glsl_path << endl;
+}
+
 void core2d::f_zoom_pos_start(uint32_t in_i_x, uint32_t in_i_y) {
 	cout << __FUNCTION__ << " " << in_i_x << " " << in_i_y << endl;
 	GLdouble f_obj_x, f_obj_y, f_obj_z;
@@ -126,9 +130,9 @@ void core2d::f_gl_render(void) {
 	f_min_z = -1.0;
 	f_max_z = 1.0;
 
-	cout << "X - min: " << f_min_x << ", max: " << f_max_x << endl;
-	cout << "Y - min: " << f_min_y << ", max: " << f_max_y << endl;
-	cout << "Z - min: " << f_min_z << ", max: " << f_max_z << endl;
+	//cout << "X - min: " << f_min_x << ", max: " << f_max_x << endl;
+	//cout << "Y - min: " << f_min_y << ", max: " << f_max_y << endl;
+	//cout << "Z - min: " << f_min_z << ", max: " << f_max_z << endl;
 
 	f_scale_x = 1.0 / (f_max_x - f_min_x);
 	f_scale_y = 1.0 / (f_max_y - f_min_y);
@@ -144,10 +148,9 @@ void core2d::f_gl_render(void) {
 		f_scale_z = 1.0;
 	}
 
-	cout << "Scale " << f_scale_x << ", " << f_scale_y << ", " << f_scale_z
-			<< endl;
+	//cout << "Scale " << f_scale_x << ", " << f_scale_y << ", " << f_scale_z << endl;
+	//cout << f_scale_z << endl;
 
-	cout << f_scale_z << endl;
 	double f_scale_ui = 1.0 / 1.2;
 
 	glPushMatrix();
@@ -221,7 +224,6 @@ void core2d::f_gl_render(void) {
 
 	f_gl_render_scaled();
 
-
 	for (int i = 0; i < 6; i++) {
 		glDisable(GL_CLIP_PLANE0 + i);
 	}
@@ -246,10 +248,19 @@ void core2d::f_gl_render(void) {
 	uint32_t i_rule_k = 1;
 	int i_rule_exp = 0;
 
+	bool b_decrease = false;
+	bool b_increase = false;
+
 	while (1) {
-		double f_step = f_range_x / (i_rule_k*exp10(i_rule_exp));
+		double f_step = f_range_x / (i_rule_k * exp10(i_rule_exp));
+		//cout << "step: "<< f_step << " range:" << f_range_x << " k:"<< i_rule_k <<" exp:"<< i_rule_exp << endl;
+		//cout << "fmax_x" << f_max_x << " fminx" << f_min_x << endl;
 
 		if (f_step < 5) {
+			/* Halt on first decrease if increase */
+			if (b_increase)
+				break;
+
 			switch (i_rule_k) {
 			case 1:
 				i_rule_k = 5;
@@ -262,7 +273,13 @@ void core2d::f_gl_render(void) {
 				i_rule_k = 2;
 				break;
 			}
+
+			b_decrease = true;
 		} else if (f_step > 10) {
+			/* Halt on first decrease if increase */
+			if (b_decrease)
+				break;
+
 			switch (i_rule_k) {
 			case 1:
 				i_rule_k = 2;
@@ -275,15 +292,35 @@ void core2d::f_gl_render(void) {
 				i_rule_exp++;
 				break;
 			}
+
+			b_increase = true;
 		} else {
 			break;
 		}
 	}
 
-	double f_rule_step = (i_rule_k*exp10(i_rule_exp));
-	int i_min = (int)(f_min_x/f_rule_step) ;
+	double f_rule_step = (double(i_rule_k) * exp10(i_rule_exp));
+	int i_min = (int) ceil(f_min_x / f_rule_step);
+	int i_max = (int) ceil(f_max_x / f_rule_step);
+	cout << "Rule " << (i_rule_k * exp10(i_rule_exp)) << endl;
 
-	cout << "Rule " <<(i_rule_k*exp10(i_rule_exp)) << endl;
+	cout << "imin" << i_min << endl;
+	cout << i_min << " pos:" << i_min * f_rule_step << " max: " << f_max_x
+			<< endl;
+
+	if (i_min != i_max) {
+		glColor3f(0.0, 0.0, 0.0);
+		for (int i = i_min; i * f_rule_step < f_max_x; i++) {
+			cout << "min:" << i_min << " max:" << i_max << " i: " << i
+					<< " pos:" << i * f_rule_step << "min" << f_min_x << "max:"
+					<< f_max_x << " rulestep:" << f_rule_step << " i_rule_k"
+					<< i_rule_k << "exp:" << i_rule_exp << endl;
+			glBegin(GL_LINES);
+			glVertex3f(i * f_rule_step, (0.0/f_scale_y) + f_min_y, 1.1);
+			glVertex3f(i * f_rule_step, (-0.015/f_scale_y) + f_min_y, 1.1);
+			glEnd();
+		}
+	}
 
 	/* Return to UI modelview */
 	glPopMatrix();
@@ -330,9 +367,6 @@ void core2d::f_gl_render(void) {
 	glVertex3f(1.0, 0.0, 1.1);
 	glEnd();
 
-
-
-
 	glPopMatrix();
 }
 
@@ -363,7 +397,8 @@ void core2d::f_gl_shader_compile(string const & in_str_filename,
 	/* Read file content */
 	const char * pc_tmp;
 	try {
-		pc_tmp = strdup(f_misc_file_content(_str_glsl_path + in_str_filename).c_str());
+		pc_tmp = strdup(
+				f_misc_file_content(_str_glsl_path + in_str_filename).c_str());
 	} catch (...) {
 		cerr << "Unable to open " << _str_glsl_path + in_str_filename << endl;
 		exit(-1);
@@ -384,7 +419,8 @@ void core2d::f_gl_shader_compile(string const & in_str_filename,
 		GLchar ac_log[1024];
 		glGetShaderInfoLog(i_shader, sizeof(ac_log), 0, ac_log);
 
-		cerr << "Could not compile shader: " << _str_glsl_path + in_str_filename << endl;
+		cerr << "Could not compile shader: " << _str_glsl_path
+				+ in_str_filename << endl;
 		cerr << ac_log << endl;
 		glDeleteShader(i_shader);
 		exit(-1);

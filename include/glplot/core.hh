@@ -31,6 +31,8 @@
 
 #define M_DBGLINE cout << __FUNCTION__ << "@"<<  __LINE__ << endl;
 
+typedef void (*FT_CORE_REDRAW_CB) (void*);
+
 namespace glplot {
 
 class core {
@@ -39,12 +41,20 @@ class core {
 	uint32_t _i_width;
 	uint32_t _i_heigth;
 
+	/* Redraw stuff */
+	FT_CORE_REDRAW_CB _pf_cb;
+	void * _pv_cb_arg;
+
 public:
 	/* EXT */
 	PFNGLTEXBUFFEREXTPROC _f_glTexBufferEXT;
 
 public:
 	core();
+
+	// redraw stuff
+	void f_redraw(void);
+	void f_redraw_set_cb(FT_CORE_REDRAW_CB in_pf_cb, void* in_pv_arg);
 
 	virtual void f_gl_init(void);
 	virtual void f_gl_resize(uint32_t in_i_w, uint32_t in_i_h);

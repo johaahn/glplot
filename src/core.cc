@@ -29,7 +29,8 @@ using namespace std;
 using namespace glplot;
 
 core::core() {
-
+	_pf_cb = NULL;
+	_pv_cb_arg = NULL;
 }
 
 void core::f_gl_init(void) {
@@ -92,4 +93,15 @@ void core::f_zoom_pos_end(uint32_t in_i_x, uint32_t in_i_y) {
 }
 void core::f_zoom_reset() {
 	cout << __FUNCTION__ <<endl;
+}
+
+void core::f_redraw_set_cb(FT_CORE_REDRAW_CB in_pf_cb, void* in_pv_arg) {
+	_pf_cb = in_pf_cb;
+	_pv_cb_arg = in_pv_arg;
+}
+
+void core::f_redraw(void) {
+	if(_pf_cb) {
+		_pf_cb(_pv_cb_arg);
+	}
 }

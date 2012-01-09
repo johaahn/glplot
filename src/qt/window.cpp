@@ -27,11 +27,22 @@
 using namespace std;
 using namespace glplot;
 
+
 window::window(core * in_pc_core, QWidget *parent)
-    : glwidget(60, parent, (char*)"Premier Polygone avec OpenGL et Qt")
+    : glwidget(60, parent, (char*)"Figure GLPLOT")
 {
 	_pc_core = in_pc_core;
 }
+
+void
+window::customEvent(QEvent* e)
+{
+	if(e->type() == (QEvent::Type)UPDATEGL_CUSTOM_EVENT)
+	{
+		cout << "UPDATING GL" << endl;
+		updateGL();
+	}
+};
 
 void window::initializeGL()
 {

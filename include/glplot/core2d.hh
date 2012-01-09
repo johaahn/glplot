@@ -55,6 +55,7 @@ public:
 
 public :
 	core2d();
+	~core2d();
 
 	/* Child methods */
 	virtual void f_gl_init(void);

@@ -28,8 +28,15 @@
 
 namespace glplot {
 class figure {
-	pthread_t _s_thread;
+	static pthread_t _s_thread;
+	//static bool _b_thread_created;
+	//static void * _pv_thread;
+
 	core * _pc_core;
+
+	static void * _pv_app;
+	void * _pv_win;
+
 
 public:
 	figure(core & in_c_core);

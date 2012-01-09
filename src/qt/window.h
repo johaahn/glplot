@@ -35,6 +35,9 @@ Q_OBJECT
 public:
 	explicit window(core * in_pc_core, QWidget *parent = 0);
 
+public:
+	void customEvent(QEvent* e);
+
 signals:
 	void clicked();
 
@@ -48,5 +51,8 @@ protected:
 	void mouseReleaseEvent(QMouseEvent *event);
 };
 }
+
+static const int UPDATEGL_CUSTOM_EVENT=1002;
+static const int NEW_FIGURE_CUSTOM_EVENT=1001;
 
 #endif // MYWINDOW_H
